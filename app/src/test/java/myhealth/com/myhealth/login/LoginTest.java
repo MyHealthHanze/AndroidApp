@@ -35,7 +35,7 @@ public class LoginTest {
     @Test
     public void shouldShowErrorMessageWhenPasswordIsEmpty() throws Exception {
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
-        when(view.getPassword()).thenReturn("");
+        when(view.getPassword()).thenReturn("test");
         presenter.onLoginClicked();
 
         verify(view).showPasswordError(R.string.password_error);

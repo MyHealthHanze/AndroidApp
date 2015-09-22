@@ -39,10 +39,10 @@ public class LoginService {
                 public void onResponse(String response) {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
-                        // Get the JWT
+                        // Get and save the JWT
                         String token = jsonResponse.getString("token");
                         mPresenter.saveJWT(token);
-                        // Start the welcome screne
+                        // Start the welcome screen
                         mView.startActivity(new Intent(mView, WelcomeActivity.class));
                     } catch (JSONException e) {
                         e.printStackTrace();

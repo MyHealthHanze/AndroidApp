@@ -33,7 +33,7 @@ public class LoginPresenter {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("jwt", token);
-        editor.commit();
+        editor.apply();
     }
 
 
