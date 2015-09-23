@@ -1,12 +1,13 @@
 package myhealth.com.myhealth.login;
 
-import myhealth.com.myhealth.R;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import myhealth.com.myhealth.R;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
