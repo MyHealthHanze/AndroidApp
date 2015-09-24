@@ -11,4 +11,12 @@
     <string name="email_error">Email is incorrect!</string>
     <string name="password_error">Password is incorrect!</string>
     <string name="login_unsuccessful">Login unsuccessful</string>
+    <string name="passwordEditScreenWelkom">This is the first time you logged in. Your password need to be edited</string>
+    <string name="title_activity_password_edit">Password edit</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_password">Reapeat new password</string>
+    <string name="password_button">Change</string>
+    <string name="password_empty1">Password 1 can not be empty</string>
+    <string name="password_empty2">Password 2 can not be empty</string>
+    <string name="password_not_the_same">The password need to be the same as password 1</string>
 </resources>

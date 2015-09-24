@@ -1,8 +1,6 @@
 package myhealth.com.myhealth.login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.passwordEdit.PasswordEditActivity;
 import myhealth.com.myhealth.welcome.WelcomeActivity;
 
 public class LoginService {
@@ -42,8 +41,16 @@ public class LoginService {
                         // Get and save the JWT
                         String token = jsonResponse.getString("token");
                         mPresenter.saveJWT(token);
-                        // Start the welcome screen
-                        mView.startActivity(new Intent(mView, WelcomeActivity.class));
+                        // check if this is the first login
+                        if (jsonResponse.has("changePassword") && jsonResponse.getBoolean("changePassword")){
+                            Intent i = new Intent(mView, PasswordEditActivity.class);
+                            i.putExtra("old_password", mView.getPassword());
+                            mView.startActivity(i);
+                        }
+                        else {
+                            // Start the welcome screen
+                            mView.startActivity(new Intent(mView, WelcomeActivity.class));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
