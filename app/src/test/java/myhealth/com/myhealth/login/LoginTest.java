@@ -1,5 +1,7 @@
 package myhealth.com.myhealth.login;
 
+import android.content.SharedPreferences;
+
 import myhealth.com.myhealth.R;
 
 import org.junit.Before;
@@ -9,10 +11,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoginTest {
 
+    @Mock
+    private SharedPreferences.Editor editor;
     @Mock
     private LoginActivity view;
     @Mock
@@ -25,19 +30,52 @@ public class LoginTest {
     }
 
     @Test
-    public void shouldShowErrorMessageWhenEmailIsEmpty() throws Exception {
+    public void shouldShowErrorMessageWhenEmailIsInvalid() throws Exception {
         when(view.getEmail()).thenReturn("");
         presenter.onLoginClicked();
+        verify(view).showEmailError(R.string.email_error);
 
+        when(view.getEmail()).thenReturn("johnbakkergmail.com");
+        presenter.onLoginClicked();
+        verify(view).showEmailError(R.string.email_error);
+
+        when(view.getEmail()).thenReturn("johnbakker@gmailcom");
+        presenter.onLoginClicked();
+        verify(view).showEmailError(R.string.email_error);
+
+        when(view.getEmail()).thenReturn("johnbakkergmailcom");
+        presenter.onLoginClicked();
         verify(view).showEmailError(R.string.email_error);
     }
 
     @Test
-    public void shouldShowErrorMessageWhenPasswordIsEmpty() throws Exception {
+    public void shouldNotShowErrorMessageWhenEmailIsValid() throws Exception {
+        when(view.getEmail()).thenReturn("johnbakker@gmail.com");
+        presenter.onLoginClicked();
+        verify(view, never()).showEmailError(R.string.email_error);
+    }
+
+    @Test
+    public void shouldShowErrorMessageWhenPasswordIsInvalid() throws Exception {
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
         when(view.getPassword()).thenReturn("");
         presenter.onLoginClicked();
-
         verify(view).showPasswordError(R.string.password_error);
+    }
+
+    @Test
+    public void shouldNotShowErrorMessageWhenPasswordIsValid() throws Exception {
+        when(view.getEmail()).thenReturn("johnbakker@gmail.com");
+        when(view.getPassword()).thenReturn("T");
+        presenter.onLoginClicked();
+        verify(view, never()).showPasswordError(R.string.password_error);
+    }
+
+    @Test
+    public void saveJWTShouldSaveJWT() throws Exception {
+        String s = "test";
+        presenter.saveJWT(s);
+        verify(editor).putString("jwt", s);
+        verify(editor).apply();
     }
 }

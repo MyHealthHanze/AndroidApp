@@ -42,7 +42,7 @@ public class PasswordEditService {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonResponse = new JSONObject(response);
+                            JSONObject jsonResponse = new JSONObject(response);//todo refector this unessecary try catch block
                             Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
                             mView.startActivity(new Intent(mView, WelcomeActivity.class));
                         } catch (JSONException e) {
@@ -55,7 +55,7 @@ public class PasswordEditService {
                     public void onErrorResponse(VolleyError error) {
                         // This means the credentials are incorrect or something went wrong, so display an message
                         Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
-                        // todo nog wat doen met de error
+                        // todo nog wat doen met de error (error.networkResponse)
                     }
                 }
         ) {
