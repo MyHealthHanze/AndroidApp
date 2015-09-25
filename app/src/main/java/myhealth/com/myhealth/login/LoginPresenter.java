@@ -31,9 +31,8 @@ public class LoginPresenter {
 
     public void saveJWT(String token) {
         // Save the JWT in SharedPreferences
-        SharedPreferences prefs = ((Context)mView).getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
-        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
+        SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("jwt", token);
         editor.apply();
     }

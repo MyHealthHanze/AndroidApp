@@ -29,6 +29,6 @@ public class PasswordEditPresenter {
             mView.showPassword2Error(R.string.password_not_the_same);
             return;
         }
-        mService.changePassword(passwordOld, password1, (Context) mView);
+        mService.changePassword(passwordOld, password1);
     }
 }

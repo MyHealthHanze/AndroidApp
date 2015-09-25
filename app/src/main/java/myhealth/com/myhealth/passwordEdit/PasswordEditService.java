@@ -34,7 +34,7 @@ public class PasswordEditService {
         mPresenter = presenter;
     }
 
-    public void changePassword(final String oldPassword, final String newPassword, final Context context) {
+    public void changePassword(final String oldPassword, final String newPassword) {
         String url = "https://myhealth-hanze.herokuapp.com/api/v1/user/password";
 
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
@@ -43,6 +43,7 @@ public class PasswordEditService {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
+                            Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
                             // todo nog wat doen met de response
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -53,7 +54,7 @@ public class PasswordEditService {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // This means the credentials are incorrect or something went wrong, so display an message
-                        Log.d("error", error.toString());
+                        Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
                         // todo nog wat doen met de error
                     }
                 }
@@ -71,7 +72,7 @@ public class PasswordEditService {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<String, String>();
 
-                SharedPreferences prefs = context.getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mView.getBaseContext()); //context.getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
                 String token = prefs.getString("jwt", "");
                 Log.d("token", token);
                 params.put("authorization", "Bearer "+ token);
