@@ -53,6 +53,7 @@ public class LoginTest {
     @Test
     public void shouldNotShowErrorMessageWhenEmailIsValid() throws Exception {
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
+        when(view.getEmail()).thenReturn("test");
         presenter.onLoginClicked();
         verify(view, never()).showEmailError(R.string.email_error);
     }
@@ -68,7 +69,7 @@ public class LoginTest {
     @Test
     public void shouldNotShowErrorMessageWhenPasswordIsValid() throws Exception {
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
-        when(view.getPassword()).thenReturn("T");
+        when(view.getPassword()).thenReturn("test");
         presenter.onLoginClicked();
         verify(view, never()).showPasswordError(R.string.password_error);
     }
