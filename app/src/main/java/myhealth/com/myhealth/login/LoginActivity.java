@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         mPassword = (EditText) findViewById(R.id.password_input_field);
 
         // Create the new presenter
-        mLoginPresenter = new LoginPresenter(this,this);
+        mLoginPresenter = new LoginPresenter(this);
 
         // Setup the button and its ClickListener
         mLoginButton = (Button) findViewById(R.id.login);

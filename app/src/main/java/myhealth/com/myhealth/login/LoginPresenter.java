@@ -9,10 +9,8 @@ import myhealth.com.myhealth.R;
 public class LoginPresenter {
     private LoginView mView;
     private LoginService mService;
-    private Context context;
 
-    public LoginPresenter(LoginView view, Context context) {
-        this.context =context;
+    public LoginPresenter(LoginView view) {
         mView = view;
         mService = new LoginService((LoginActivity) mView, this);
     }
@@ -33,7 +31,7 @@ public class LoginPresenter {
 
     public void saveJWT(String token) {
         // Save the JWT in SharedPreferences
-        SharedPreferences prefs = context.getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
+        SharedPreferences prefs = ((Context)mView).getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
         //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("jwt", token);
