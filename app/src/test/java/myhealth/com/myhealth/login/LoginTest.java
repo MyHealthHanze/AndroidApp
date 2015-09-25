@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -18,9 +19,6 @@ import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoginTest {
-
-    @Mock
-    private SharedPreferences.Editor editor;
     @Mock
     private LoginActivity view;
     @Mock
@@ -31,6 +29,7 @@ public class LoginTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         presenter = new LoginPresenter(view);
+        presenter.setService(service);
     }
 
 
@@ -76,6 +75,7 @@ public class LoginTest {
 
     @Test
     public void saveJWTShouldSaveJWT() throws Exception {
+        SharedPreferences.Editor editor = Mockito.mock(SharedPreferences.Editor.class);
         String s = "test";
         presenter.saveJWT(s);
         verify(editor).putString("jwt", s);
