@@ -8,7 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.never;
@@ -26,26 +29,25 @@ public class LoginTest {
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         presenter = new LoginPresenter(view);
     }
+
 
     @Test
     public void shouldShowErrorMessageWhenEmailIsInvalid() throws Exception {
         when(view.getEmail()).thenReturn("");
         presenter.onLoginClicked();
-        verify(view).showEmailError(R.string.email_error);
 
         when(view.getEmail()).thenReturn("johnbakkergmail.com");
         presenter.onLoginClicked();
-        verify(view).showEmailError(R.string.email_error);
 
         when(view.getEmail()).thenReturn("johnbakker@gmailcom");
         presenter.onLoginClicked();
-        verify(view).showEmailError(R.string.email_error);
 
         when(view.getEmail()).thenReturn("johnbakkergmailcom");
         presenter.onLoginClicked();
-        verify(view).showEmailError(R.string.email_error);
+        verify(view, times(4)).showEmailError(R.string.email_error);
     }
 
     @Test
