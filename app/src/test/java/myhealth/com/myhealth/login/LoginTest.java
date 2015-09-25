@@ -55,7 +55,7 @@ public class LoginTest {
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
         when(view.getEmail()).thenReturn("test");
         presenter.onLoginClicked();
-        verify(view, never()).showEmailError(R.string.email_error);
+        verify(view, times(0)).showEmailError(R.string.email_error);
     }
 
     @Test

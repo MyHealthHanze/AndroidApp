@@ -1,14 +1,13 @@
-package com.myhealth.com.passwordEdit;
+package myhealth.com.myhealth.passwordEdit;
 
 import myhealth.com.myhealth.R;
-import myhealth.com.myhealth.passwordEdit.PasswordEditActivity;
-import myhealth.com.myhealth.passwordEdit.PasswordEditPresenter;
-import myhealth.com.myhealth.passwordEdit.PasswordEditService;
+
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,6 +27,7 @@ public class FirstLoginTest {
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         presenter = new PasswordEditPresenter(view);
     }
 
