@@ -9,6 +9,7 @@ import myhealth.com.myhealth.R;
 public class LoginPresenter {
     private LoginView mView;
     private LoginService mService;
+    private SharedPreferences.Editor mEditor;
 
     public LoginPresenter(LoginView view) {
         mView = view;
@@ -37,9 +38,15 @@ public class LoginPresenter {
         // Save the JWT in SharedPreferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
         SharedPreferences.Editor editor = sharedPref.edit();
+        if (mEditor != null){
+            editor = mEditor;
+        }
         editor.putString("jwt", token);
         editor.apply();
     }
 
 
+    public void useEditor(SharedPreferences.Editor editor) {
+        this.mEditor = editor;
+    }
 }

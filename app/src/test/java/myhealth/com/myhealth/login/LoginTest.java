@@ -76,6 +76,7 @@ public class LoginTest {
     @Test
     public void saveJWTShouldSaveJWT() throws Exception {
         SharedPreferences.Editor editor = Mockito.mock(SharedPreferences.Editor.class);
+        presenter.useEditor(editor);
         String s = "test";
         presenter.saveJWT(s);
         verify(editor).putString("jwt", s);
