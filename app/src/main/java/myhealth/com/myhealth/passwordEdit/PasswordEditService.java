@@ -44,7 +44,7 @@ public class PasswordEditService {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
-                            // todo nog wat doen met de response
+                            mView.startActivity(new Intent(mView, WelcomeActivity.class));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
