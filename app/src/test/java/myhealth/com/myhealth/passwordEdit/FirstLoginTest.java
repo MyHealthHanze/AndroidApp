@@ -44,16 +44,19 @@ public class FirstLoginTest {
         when(view.getNewPassword1()).thenReturn("");
         when(view.getNewPassword2()).thenReturn("test");
         when(view.getOldPassword()).thenReturn("oldtest");
+        presenter.onChangeClicked();
 
 
         when(view.getNewPassword1()).thenReturn("test");
         when(view.getNewPassword2()).thenReturn("");
         when(view.getOldPassword()).thenReturn("oldtest");
+        presenter.onChangeClicked();
 
 
         when(view.getNewPassword1()).thenReturn("test1");
         when(view.getNewPassword2()).thenReturn("test2");
         when(view.getOldPassword()).thenReturn("oldtest");
+        presenter.onChangeClicked();
 
         verify(view, times(1)).showPassword1Error(R.string.password_empty1);
         verify(view, times(1)).showPassword2Error(R.string.password_empty2);
