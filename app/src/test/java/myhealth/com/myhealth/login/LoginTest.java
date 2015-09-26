@@ -51,7 +51,7 @@ public class LoginTest {
 
     @Test
     public void shouldNotShowErrorMessageWhenEmailIsValid() throws Exception {
-        view = Mocckito.mock(view.class);
+        view = Mockito.mock(LoginActivity.class);
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
         when(view.getEmail()).thenReturn("test");
         presenter.onLoginClicked();
