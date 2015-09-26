@@ -13,6 +13,10 @@ public class PasswordEditPresenter {
         mService = new PasswordEditService((PasswordEditActivity) mView, this);
     }
 
+    public void setService(PasswordEditService service) {
+        this.mService = service;
+    }
+
     public void onChangeClicked() {
         String passwordOld = mView.getOldPassword();
         String password1 = mView.getNewPassword1();

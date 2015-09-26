@@ -38,7 +38,7 @@ public class LoginPresenter {
         // Save the JWT in SharedPreferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
         SharedPreferences.Editor editor = sharedPref.edit();
-        if (mEditor != null){
+        if (mEditor == null){
             editor = mEditor;
         }
         editor.putString("jwt", token);
