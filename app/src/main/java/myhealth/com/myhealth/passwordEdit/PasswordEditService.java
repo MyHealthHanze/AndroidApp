@@ -1,6 +1,5 @@
 package myhealth.com.myhealth.passwordEdit;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -8,23 +7,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import myhealth.com.myhealth.R;
-import myhealth.com.myhealth.login.LoginActivity;
-import myhealth.com.myhealth.welcome.WelcomeActivity;
+import myhealth.com.myhealth.maingui.MainActivity;
 
 public class PasswordEditService {
     private PasswordEditActivity mView;
@@ -43,7 +36,7 @@ public class PasswordEditService {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(mView, WelcomeActivity.class);
+                        Intent i = new Intent(mView, MainActivity.class);
                         i.putExtra("logged_in", true);
                         mView.startActivity(i);
                     }
@@ -68,7 +61,7 @@ public class PasswordEditService {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mView.getBaseContext()); //context.getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
                 String token = prefs.getString("jwt", "");

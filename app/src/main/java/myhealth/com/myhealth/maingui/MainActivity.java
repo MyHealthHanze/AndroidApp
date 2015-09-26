@@ -1,6 +1,7 @@
 package myhealth.com.myhealth.maingui;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -83,5 +84,17 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-
+    /**
+     * Disables the apps history if the user logs in or changes its password for the first time
+     */
+    @Override
+    public void onBackPressed() {
+        Intent i = getIntent();
+        // Get the "logged_in" extra from the intent, sets false as the default value
+        boolean loggedIn = i.getExtras().getBoolean("logged_in", false);
+        // Finish the app (closes app) when the user presses back and comes from login
+        if (!loggedIn) {
+            super.onBackPressed();
+        }
+    }
 }
