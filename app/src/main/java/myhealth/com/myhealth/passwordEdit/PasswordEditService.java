@@ -1,4 +1,5 @@
 package myhealth.com.myhealth.passwordEdit;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,13 +42,10 @@ public class PasswordEditService {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);//todo refector this unessecary try catch block
-                            Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
-                            mView.startActivity(new Intent(mView, WelcomeActivity.class));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(mView, WelcomeActivity.class);
+                        i.putExtra("logged_in", true);
+                        mView.startActivity(i);
                     }
                 },
                 new Response.ErrorListener() {
@@ -55,7 +53,7 @@ public class PasswordEditService {
                     public void onErrorResponse(VolleyError error) {
                         // This means the credentials are incorrect or something went wrong, so display an message
                         Toast.makeText(mView, mView.getString(R.string.password_edit_succesvol), Toast.LENGTH_SHORT).show();
-                        // todo nog wat doen met de error (error.networkResponse)
+                        // TODO: nog wat doen met de error (error.networkResponse)
                     }
                 }
         ) {
@@ -70,12 +68,12 @@ public class PasswordEditService {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<String, String>();
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mView.getBaseContext()); //context.getSharedPreferences("com.myhealth.app", Context.MODE_PRIVATE);
                 String token = prefs.getString("jwt", "");
                 Log.d("token", token);
-                params.put("authorization", "Bearer "+ token);
+                params.put("authorization", "Bearer " + token);
 
                 return params;
             }

@@ -29,6 +29,9 @@ public class LoginPresenter {
         this.mService = service;
     }
 
+    /**
+     * Handles the users interaction with the app
+     */
     public void onLoginClicked() {
         String mEmail = mView.getEmail();
         if (mEmail.isEmpty() || !mEmail.contains("@") || !mEmail.contains(".")) {

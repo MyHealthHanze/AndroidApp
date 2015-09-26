@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import myhealth.com.myhealth.R;
 
-public class PasswordEditActivity extends AppCompatActivity implements PasswordEditView{
+public class PasswordEditActivity extends AppCompatActivity implements PasswordEditView {
 
     private String password;
     private EditText mPassword1;
@@ -26,7 +26,7 @@ public class PasswordEditActivity extends AppCompatActivity implements PasswordE
 
         // Get the input fields
         mPassword1 = (EditText) findViewById(R.id.editPassword1);
-        mPassword2 = (EditText) findViewById(R.id.editPassword1);
+        mPassword2 = (EditText) findViewById(R.id.editPassword2);
         Intent i = getIntent();
         password = i.getExtras().getString("old_password");
 
@@ -60,8 +60,12 @@ public class PasswordEditActivity extends AppCompatActivity implements PasswordE
     }
 
     @Override
-    public void showPassword1Error(int resId) { mPassword1.setError(getString(resId));}
+    public void showPassword1Error(int resId) {
+        mPassword1.setError(getString(resId));
+    }
 
     @Override
-    public void showPassword2Error(int resId) { mPassword1.setError(getString(resId));}
+    public void showPassword2Error(int resId) {
+        mPassword1.setError(getString(resId));
+    }
 }

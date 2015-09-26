@@ -50,7 +50,9 @@ public class LoginService {
                                 mView.startActivity(i);
                             } else {
                                 // Start the welcome screen
-                                mView.startActivity(new Intent(mView, WelcomeActivity.class));
+                                Intent i = new Intent(mView, WelcomeActivity.class);
+                                i.putExtra("logged_in", true);
+                                mView.startActivity(i);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
