@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_com_name">com.myhealth.app</string>
     <string name="app_name">MyHealth</string>
 
     <string name="action_settings">Settings</string>
@@ -7,8 +8,17 @@
     <string name="password_input_field_hint">Password</string>
 
     <string name="login_button_text">Login</string>
-
     <string name="email_error">Email is incorrect!</string>
     <string name="password_error">Password is incorrect!</string>
     <string name="login_unsuccessful">Login unsuccessful</string>
+    <string name="passwordEditScreenWelkom">This is the first time you logged in. Your password need to be edited</string>
+    <string name="title_activity_password_edit">Password edit</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_password">Confirm new password</string>
+    <string name="password_button">Change</string>
+    <string name="password_empty1">New password can not be empty</string>
+    <string name="password_empty2">Conform password can not be empty</string>
+    <string name="password_not_the_same">The password need to be the same as password 1</string>
+    <string name="password_edit_succesvol">The password has been changed</string>
+    <string name="password_edit_unsuccesvol">The password is not changed there is a </string>
 </resources>
