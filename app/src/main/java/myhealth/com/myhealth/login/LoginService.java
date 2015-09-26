@@ -1,8 +1,6 @@
 package myhealth.com.myhealth.login;
 
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -13,13 +11,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.maingui.MainActivity;
 import myhealth.com.myhealth.passwordEdit.PasswordEditActivity;
-import myhealth.com.myhealth.welcome.WelcomeActivity;
 
 public class LoginService {
 
@@ -50,7 +46,7 @@ public class LoginService {
                                 mView.startActivity(i);
                             } else {
                                 // Start the welcome screen
-                                Intent i = new Intent(mView, WelcomeActivity.class);
+                                Intent i = new Intent(mView, MainActivity.class);
                                 i.putExtra("logged_in", true);
                                 mView.startActivity(i);
                             }

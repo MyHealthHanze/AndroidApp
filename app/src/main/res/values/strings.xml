@@ -11,6 +11,11 @@
     <string name="email_error">Email is incorrect!</string>
     <string name="password_error">Password is incorrect!</string>
     <string name="login_unsuccessful">Login unsuccessful</string>
+    <string name="bluetooth_string">Connect to Bluetooth</string>
+    <string name="connection_success">Connection success</string>
+    <string name="connection_error">Connection failed. Is the device in range?</string>
+    <string name="drawer_view_measurements">Measurements</string>
+    <string name="drawer_receive_measurements">Receive measurements</string>
     <string name="passwordEditScreenWelkom">This is the first time you logged in. Your password need to be edited</string>
     <string name="title_activity_password_edit">Password edit</string>
     <string name="new_password">New password</string>
