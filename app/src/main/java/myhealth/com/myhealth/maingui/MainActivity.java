@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
         // Finish the app (closes app) when the user presses back and comes from login
         if (!loggedIn) {
             super.onBackPressed();
+        } else {
+            // Add this return so it works for all devices
+            return;
         }
     }
 }
