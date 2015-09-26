@@ -85,6 +85,8 @@ public class LoginPresenter {
         } catch (UnsupportedEncodingException e) {
             // Handle an unsupported encoding
             Log.e("UnsupportedEncodingE", e.toString());
+        } catch (NullPointerException e) {
+            Toast.makeText((LoginActivity) mView, "You don't have an internet connection!", Toast.LENGTH_SHORT).show();
         }
     }
 
