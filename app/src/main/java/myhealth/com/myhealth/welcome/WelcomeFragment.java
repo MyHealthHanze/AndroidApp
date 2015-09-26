@@ -1,26 +1,24 @@
 package myhealth.com.myhealth.welcome;
 
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import myhealth.com.myhealth.R;
 
-public class WelcomeActivity extends AppCompatActivity {
-
-    private EditText mToken;
+public class WelcomeFragment extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-
-        mToken = (EditText) findViewById(R.id.token);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_test, container, false);
+        EditText mToken = (EditText) view.findViewById(R.id.token);
         // Get the JWT
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         String token = sharedPref.getString("jwt", null);
 
         // Display the token on screen
@@ -29,6 +27,6 @@ public class WelcomeActivity extends AppCompatActivity {
         } else {
             mToken.setText("Something went wrong, token is not saved");
         }
+        return view;
     }
-
 }

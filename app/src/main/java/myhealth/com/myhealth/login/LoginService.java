@@ -1,8 +1,6 @@
 package myhealth.com.myhealth.login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import myhealth.com.myhealth.R;
-import myhealth.com.myhealth.welcome.WelcomeActivity;
+import myhealth.com.myhealth.maingui.MainActivity;
 
 public class LoginService {
 
@@ -43,7 +41,7 @@ public class LoginService {
                         String token = jsonResponse.getString("token");
                         mPresenter.saveJWT(token);
                         // Start the welcome screen
-                        mView.startActivity(new Intent(mView, WelcomeActivity.class));
+                        mView.startActivity(new Intent(mView, MainActivity.class));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
