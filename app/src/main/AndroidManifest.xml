@@ -23,6 +23,10 @@
             android:name=".maingui.MainActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".passwordEdit.PasswordEditActivity"
+            android:label="@string/title_activity_password_edit" >
+        </activity>
     </application>
 
 </manifest>
