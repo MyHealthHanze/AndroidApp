@@ -55,7 +55,9 @@ public class FirstLoginTest {
         when(view.getNewPassword2()).thenReturn("test2");
         when(view.getOldPassword()).thenReturn("oldtest");
 
-        verify(view, times(1)).showPassword1Error();
+        verify(view, times(1)).showPassword1Error(R.string.password_empty1);
+        verify(view, times(1)).showPassword2Error(R.string.password_empty2);
+        verify(view, times(1)).showPassword2Error(R.string.password_not_the_same);
         verify(service, times(1)).changePassword("oldtest", "test");
     }
 }
