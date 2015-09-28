@@ -26,4 +26,5 @@
     <string name="password_not_the_same">The password need to be the same as password 1</string>
     <string name="password_edit_succesvol">The password has been changed</string>
     <string name="password_edit_unsuccesvol">The password is not changed there is a </string>
+    <string name="no_internet_connection">You don't have an internet connection!</string>
 </resources>

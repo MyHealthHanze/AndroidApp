@@ -19,6 +19,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import myhealth.com.myhealth.R;
+
 /**
  * API holds all of the API endpoints and can fire off API requests
  */
@@ -122,7 +124,7 @@ public class API {
             // Handle an unsupported encoding
             Log.e("UnsupportedEncodingE", e.toString());
         } catch (NullPointerException e) {
-            Toast.makeText(activity, "You don't have an internet connection!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
         }
     }
 
