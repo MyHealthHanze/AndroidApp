@@ -1,32 +1,31 @@
 package myhealth.com.myhealth.login;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
+import myhealth.com.myhealth.api.APIInterface;
+import myhealth.com.myhealth.maingui.MainActivity;
+import myhealth.com.myhealth.passwordEdit.PasswordEditActivity;
 
-public class LoginPresenter {
-    private LoginView mView;
-    private LoginService mService;
+public class LoginPresenter implements APIInterface {
+    private LoginActivity mView;
     private SharedPreferences.Editor mEditor;
+    private API mAPI;
 
-    public LoginPresenter(LoginView view) {
+    public LoginPresenter(LoginActivity view, API api) {
         mView = view;
-        mService = new LoginService((LoginActivity) mView, this);
-    }
-
-    public void setService(LoginService service) {
-        this.mService = service;
+        mAPI = api;
     }
 
     /**
@@ -43,7 +42,14 @@ public class LoginPresenter {
             mView.showPasswordError(R.string.password_error);
             return;
         }
-        mService.login(mEmail, mPassword);
+
+        // Set the body for the request in a HashMap
+        Map<String, String> params = new HashMap<>();
+        params.put("email", mEmail);
+        params.put("password", mPassword);
+
+        // Fire off the API request
+        mAPI.request(API.USER_LOGIN_POST, API.POST, this, mView, params, false);
     }
 
     /**
@@ -64,33 +70,40 @@ public class LoginPresenter {
         editor.apply();
     }
 
+    public void useEditor(SharedPreferences.Editor editor) {
+        this.mEditor = editor;
+    }
+
+    @Override
+    public void onResponse(String response) {
+        try {
+            JSONObject jsonResponse = new JSONObject(response);
+            // Get and save the JWT
+            String token = jsonResponse.getString("token");
+            saveJWT(token);
+            // check if this is the first login
+            if (jsonResponse.has("changePassword") && jsonResponse.getBoolean("changePassword")) {
+                Intent i = new Intent(mView, PasswordEditActivity.class);
+                i.putExtra("old_password", mView.getPassword());
+                (mView).startActivity(i);
+            } else {
+                // Start the welcome screen
+                Intent i = new Intent(mView, MainActivity.class);
+                i.putExtra("logged_in", true);
+                (mView).startActivity(i);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Parses the error response from the VolleyError object and shows a Toast message to the user
      *
      * @param error
      */
-    public void handleErrorResponse(VolleyError error) {
-        try {
-            // Get response body from the VolleyError object
-            String responseBody = new String(error.networkResponse.data, "utf-8");
-            // Get the JSON object
-            JSONObject jsonObject = new JSONObject(responseBody);
-            // Get the string from the "error" object
-            String errorString = jsonObject.getString("error");
-            // Create a Toast message
-            Toast.makeText((LoginActivity) mView, errorString, Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
-            // Handle a malformed json response
-            Log.e("JSON Exception", e.toString());
-        } catch (UnsupportedEncodingException e) {
-            // Handle an unsupported encoding
-            Log.e("UnsupportedEncodingE", e.toString());
-        } catch (NullPointerException e) {
-            Toast.makeText((LoginActivity) mView, "You don't have an internet connection!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void useEditor(SharedPreferences.Editor editor) {
-        this.mEditor = editor;
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        // Empty if you want the default implementation, see the API class
     }
 }

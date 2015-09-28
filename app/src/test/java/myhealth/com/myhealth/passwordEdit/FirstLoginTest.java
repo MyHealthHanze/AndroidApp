@@ -1,6 +1,7 @@
 package myhealth.com.myhealth.passwordEdit;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 
 import org.junit.Before;
@@ -14,24 +15,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by wessel on 25-9-2015.
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class FirstLoginTest {
 
     @Mock
     private PasswordEditActivity view;
     @Mock
-    private PasswordEditService service;
+    private API api;
     private PasswordEditPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new PasswordEditPresenter(view);
-        presenter.setService(service);
+        presenter = new PasswordEditPresenter(view, api);
     }
 
     @Test
@@ -61,6 +57,5 @@ public class FirstLoginTest {
         verify(view, times(1)).showPassword1Error(R.string.password_empty1);
         verify(view, times(1)).showPassword2Error(R.string.password_empty2);
         verify(view, times(1)).showPassword2Error(R.string.password_not_the_same);
-        verify(service, times(1)).changePassword("oldtest", "test");
     }
 }
