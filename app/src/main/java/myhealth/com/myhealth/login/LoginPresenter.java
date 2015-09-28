@@ -63,7 +63,7 @@ public class LoginPresenter implements APIInterface {
         if (mEditor != null) { // using a mocked editor if it is set
             editor = mEditor;
         } else {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences((LoginActivity) mView);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mView);
             editor = sharedPref.edit();
         }
         editor.putString("jwt", token);

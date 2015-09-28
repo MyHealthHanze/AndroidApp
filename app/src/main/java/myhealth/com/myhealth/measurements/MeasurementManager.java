@@ -29,11 +29,16 @@ import myhealth.com.myhealth.api.APIInterface;
  * Manage incoming measurements. Store them locally and send them to the webservice.
  */
 public class MeasurementManager extends SQLiteOpenHelper implements APIInterface {
+    // Database information
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Measurement.db";
+
+    // Table creation parts
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
+
+    // Table create statements
     private static final String SQL_CREATE_ECG =
             "CREATE TABLE " + MeasurementContract.ECG.TABLE_NAME + " (" +
                     MeasurementContract.ECG._ID + " INTEGER PRIMARY KEY," +
@@ -58,12 +63,15 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
                     MeasurementContract.BPM.COLUMN_NAME_BPM + INTEGER_TYPE + COMMA_SEP +
                     MeasurementContract.BPM.COLUMN_NAME_DATE + TEXT_TYPE +
                     " )";
+
+    // Table delete statements
     private static final String SQL_DELETE_ECG =
             "DROP TABLE IF EXISTS " + MeasurementContract.ECG.TABLE_NAME;
     private static final String SQL_DELETE_BP =
             "DROP TABLE IF EXISTS " + MeasurementContract.BP.TABLE_NAME;
     private static final String SQL_DELETE_BPM =
             "DROP TABLE IF EXISTS " + MeasurementContract.BPM.TABLE_NAME;
+
     // The current id for the measurement
     private int currentId;
     // The context
@@ -76,6 +84,12 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
     private Map<Integer, JSONObject> measurements;
 
 
+    /**
+     * Constructor to initialize a MeasurementManager object
+     *
+     * @param context  The context this was made in
+     * @param activity The activity this belongs to
+     */
     public MeasurementManager(Context context, AppCompatActivity activity) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -94,7 +108,7 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // This should probably do something. I think.
     }
 
     /**
@@ -138,7 +152,7 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
      *
      * @param userIdColumn The column of the user id
      * @param valuesColumn The column to save the values
-     * @param dateColumn   The colum to save the date
+     * @param dateColumn   The column to save the date
      * @param tableName    The table
      * @param APICall      API call to make
      * @param data         The data
@@ -164,7 +178,6 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
         measurements.put(currentId, data);
         currentId++;
         // Send the request
-        Log.d("MyHealth", "Request send!");
         api.request(APICall, API.POST, this, activity, parameters, true);
     }
 
@@ -193,22 +206,37 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
 
     @Override
     public void onResponse(String response) {
-        Log.d("MyHealth", "Response!" + response);
         try {
             JSONObject jsObject = new JSONObject(response).getJSONObject("result");
             JSONObject measurement = measurements.get(jsObject.getInt("local_id"));
             if (measurement.getString("type").equals("ecg")) {
-                updateTableWithOnlineId(MeasurementContract.ECG.TABLE_NAME, MeasurementContract.ECG.COLUMN_NAME_ONLINE_ID, MeasurementContract.ECG._ID, measurement.getInt("saved_id"), jsObject.getInt("online_id"));
+                updateTableWithOnlineId(MeasurementContract.ECG.TABLE_NAME,
+                        MeasurementContract.ECG.COLUMN_NAME_ONLINE_ID,
+                        MeasurementContract.ECG._ID,
+                        measurement.getInt("saved_id"), jsObject.getInt("online_id"));
             } else if (measurement.getString("type").equals("bpm")) {
-                updateTableWithOnlineId(MeasurementContract.BPM.TABLE_NAME, MeasurementContract.BPM.COLUMN_NAME_ONLINE_ID, MeasurementContract.BPM._ID, measurement.getInt("saved_id"), jsObject.getInt("online_id"));
+                updateTableWithOnlineId(MeasurementContract.BPM.TABLE_NAME,
+                        MeasurementContract.BPM.COLUMN_NAME_ONLINE_ID, MeasurementContract.BPM._ID,
+                        measurement.getInt("saved_id"), jsObject.getInt("online_id"));
             } else if (measurement.getString("type").equals("bp")) {
-                updateTableWithOnlineId(MeasurementContract.BP.TABLE_NAME, MeasurementContract.BP.COLUMN_NAME_ONLINE_ID, MeasurementContract.BP._ID, measurement.getInt("saved_id"), jsObject.getInt("online_id"));
+                updateTableWithOnlineId(MeasurementContract.BP.TABLE_NAME,
+                        MeasurementContract.BP.COLUMN_NAME_ONLINE_ID, MeasurementContract.BP._ID,
+                        measurement.getInt("saved_id"), jsObject.getInt("online_id"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Update a measurement with the online id
+     *
+     * @param tableName      The name of the table
+     * @param columnToUpdate The name of the column
+     * @param columnToSearch The column to search
+     * @param savedId        The id to search for
+     * @param onlineId       The online id
+     */
     private void updateTableWithOnlineId(String tableName, String columnToUpdate, String columnToSearch, int savedId, int onlineId) {
         ContentValues values = new ContentValues();
         values.put(columnToUpdate, onlineId);
@@ -219,6 +247,6 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
 
     @Override
     public void onErrorResponse(VolleyError errorResponse) {
-        Log.d("MyHealth", "Error :(");
+        Log.d("MyHealth", "Error :( " + errorResponse.getMessage());
     }
 }

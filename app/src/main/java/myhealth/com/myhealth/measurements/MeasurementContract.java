@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
  * Created by Sander on 27-9-2015.
  * A 'contract' to save information about the database
  */
-public class MeasurementContract {
+class MeasurementContract {
 
     public static class ECG implements BaseColumns {
         public static final String TABLE_NAME = "ecg";
