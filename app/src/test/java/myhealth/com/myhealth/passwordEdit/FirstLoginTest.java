@@ -15,24 +15,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by wessel on 25-9-2015.
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class FirstLoginTest {
 
     @Mock
     private PasswordEditActivity view;
     @Mock
-    private API mAPI;
+    private API api;
     private PasswordEditPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new PasswordEditPresenter(view);
-        presenter.setAPI(mAPI);
+        presenter = new PasswordEditPresenter(view, api);
     }
 
     @Test

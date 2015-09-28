@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 public class PasswordEditActivity extends AppCompatActivity implements PasswordEditView {
 
@@ -31,7 +32,7 @@ public class PasswordEditActivity extends AppCompatActivity implements PasswordE
         password = i.getExtras().getString("old_password");
 
         // Create the new presenter
-        mPasswordPresenter = new PasswordEditPresenter(this);
+        mPasswordPresenter = new PasswordEditPresenter(this, new API());
 
         // Setup the button and its ClickListener
         mChangeButton = (Button) findViewById(R.id.change_button);

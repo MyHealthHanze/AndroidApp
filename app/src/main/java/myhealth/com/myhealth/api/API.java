@@ -40,7 +40,7 @@ public class API {
     public static final String PULSE_GET = "measurement/pulse";
     public static final String PULSE_POST = "measurement/pulse";
 
-    public static void request(final String endpoint, final int method, final APIInterface presenter, final AppCompatActivity activity, final Map<String, String> parameters, final boolean authenticated) {
+    public void request(final String endpoint, final int method, final APIInterface presenter, final AppCompatActivity activity, final Map<String, String> parameters, final boolean authenticated) {
 
         StringRequest postRequest = new StringRequest(method, BASE_URL + endpoint,
                 new Response.Listener<String>() {

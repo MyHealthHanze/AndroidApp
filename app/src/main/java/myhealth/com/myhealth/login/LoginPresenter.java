@@ -20,13 +20,10 @@ import myhealth.com.myhealth.passwordEdit.PasswordEditActivity;
 public class LoginPresenter implements APIInterface {
     private LoginActivity mView;
     private SharedPreferences.Editor mEditor;
-    private API mAPI = new API();
+    private API mAPI;
 
-    public LoginPresenter(LoginActivity view) {
+    public LoginPresenter(LoginActivity view, API api) {
         mView = view;
-    }
-
-    public void setAPI(API api) {
         mAPI = api;
     }
 

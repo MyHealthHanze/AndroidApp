@@ -23,14 +23,13 @@ public class LoginTest {
     @Mock
     private LoginActivity view;
     @Mock
-    private API mAPI;
+    private API api;
     private LoginPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new LoginPresenter(view);
-        presenter.setAPI(mAPI);
+        presenter = new LoginPresenter(view, api);
     }
 
 
@@ -51,17 +50,6 @@ public class LoginTest {
     }
 
     @Test
-    public void shouldNotShowErrorMessageWhenEmailIsValid() throws Exception {
-        view = Mockito.mock(LoginActivity.class);
-        presenter = new LoginPresenter(view);
-        presenter.setAPI(mAPI);
-        when(view.getEmail()).thenReturn("johnbakker@gmail.com");
-        when(view.getPassword()).thenReturn("test");
-        presenter.onLoginClicked();
-        verify(view, times(0)).showEmailError(R.string.email_error);
-    }
-
-    @Test
     public void shouldShowErrorMessageWhenPasswordIsInvalid() throws Exception {
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
         when(view.getPassword()).thenReturn("");
@@ -70,7 +58,18 @@ public class LoginTest {
     }
 
     @Test
+    public void shouldNotShowErrorMessageWhenEmailIsValid() throws Exception {
+        when(view.getEmail()).thenReturn("johnbakker@gmail.com");
+        when(view.getPassword()).thenReturn("test");
+        presenter.onLoginClicked();
+        verify(view, times(0)).showEmailError(R.string.email_error);
+    }
+
+    @Test
     public void shouldNotShowErrorMessageWhenPasswordIsValid() throws Exception {
+        view = Mockito.mock(LoginActivity.class);
+        api = Mockito.mock(API.class);
+        presenter = new LoginPresenter(view, api);
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
         when(view.getPassword()).thenReturn("test");
         presenter.onLoginClicked();

@@ -15,14 +15,11 @@ import myhealth.com.myhealth.api.APIInterface;
 import myhealth.com.myhealth.maingui.MainActivity;
 
 public class PasswordEditPresenter implements APIInterface {
-    PasswordEditActivity mView;
-    private API mAPI = new API();
+    private PasswordEditActivity mView;
+    private API mAPI;
 
-    public PasswordEditPresenter(PasswordEditActivity view) {
+    public PasswordEditPresenter(PasswordEditActivity view, API api) {
         mView = view;
-    }
-
-    public void setAPI(API api) {
         mAPI = api;
     }
 
