@@ -73,25 +73,7 @@ public class API {
                         if (error.networkResponse != null) {
                             presenter.onErrorResponse(error);
 
-                            // Default error handling implementation
-                            try {
-                                // Get response body from the VolleyError object
-                                String responseBody = new String(error.networkResponse.data, "utf-8");
-                                // Get the JSON object
-                                JSONObject jsonObject = new JSONObject(responseBody);
-                                // Get the string from the "error" object
-                                String errorString = jsonObject.getString("error");
-                                // Create a Toast message
-                                Toast.makeText(activity, errorString, Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e) {
-                                // Handle a malformed json response
-                                Log.e("JSON Exception", e.toString());
-                            } catch (UnsupportedEncodingException e) {
-                                // Handle an unsupported encoding
-                                Log.e("UnsupportedEncodingE", e.toString());
-                            } catch (NullPointerException e) {
-                                Toast.makeText(activity, "You don't have an internet connection!", Toast.LENGTH_SHORT).show();
-                            }
+                            handleErrorWithToast(error, activity);
                         }
                     }
                 }
@@ -108,15 +90,58 @@ public class API {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                if (authenticated) {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
-                    String token = prefs.getString("jwt", "");
-                    params.put("Authorization", "Bearer " + token);
-                }
-                return params;
+                return getTokenAndPutInHashMap(parameters, activity, authenticated);
             }
         };
+
+        // Finally, add the request to the queue
         Volley.newRequestQueue(activity).add(postRequest);
+    }
+
+    /**
+     * Default error handling that get the error message and display it in a Toast
+     *
+     * @param error
+     * @param activity
+     */
+    private void handleErrorWithToast(VolleyError error, AppCompatActivity activity) {
+        // Default error handling implementation
+        try {
+            // Get response body from the VolleyError object
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            // Get the JSON object
+            JSONObject jsonObject = new JSONObject(responseBody);
+            // Get the string from the "error" object
+            String errorString = jsonObject.getString("error");
+            // Create a Toast message
+            Toast.makeText(activity, errorString, Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            // Handle a malformed json response
+            Log.e("JSON Exception", e.toString());
+        } catch (UnsupportedEncodingException e) {
+            // Handle an unsupported encoding
+            Log.e("UnsupportedEncodingE", e.toString());
+        } catch (NullPointerException e) {
+            Toast.makeText(activity, "You don't have an internet connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Get the JWT and puts in in a HashMap, or creates an empty HashMap if user is not authenticated
+     *
+     * @param parameters
+     * @param activity
+     * @param authenticated
+     * @return
+     */
+    private Map<String, String> getTokenAndPutInHashMap(Map<String, String> parameters, AppCompatActivity activity, boolean authenticated) {
+        if (authenticated) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+            String token = prefs.getString("jwt", "");
+            parameters.put("Authorization", "Bearer " + token);
+        } else {
+            parameters = new HashMap<>();
+        }
+        return parameters;
     }
 }
