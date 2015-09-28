@@ -3,6 +3,7 @@ package myhealth.com.myhealth.login;
 import android.content.SharedPreferences;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,14 +23,14 @@ public class LoginTest {
     @Mock
     private LoginActivity view;
     @Mock
-    private LoginService service;
+    private API mAPI;
     private LoginPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         presenter = new LoginPresenter(view);
-        presenter.setService(service);
+        presenter.setAPI(mAPI);
     }
 
 
@@ -53,7 +54,7 @@ public class LoginTest {
     public void shouldNotShowErrorMessageWhenEmailIsValid() throws Exception {
         view = Mockito.mock(LoginActivity.class);
         presenter = new LoginPresenter(view);
-        presenter.setService(service);
+        presenter.setAPI(mAPI);
         when(view.getEmail()).thenReturn("johnbakker@gmail.com");
         when(view.getPassword()).thenReturn("test");
         presenter.onLoginClicked();

@@ -1,6 +1,7 @@
 package myhealth.com.myhealth.passwordEdit;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 
 import org.junit.Before;
@@ -24,14 +25,14 @@ public class FirstLoginTest {
     @Mock
     private PasswordEditActivity view;
     @Mock
-    private PasswordEditService service;
+    private API mAPI;
     private PasswordEditPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         presenter = new PasswordEditPresenter(view);
-        presenter.setService(service);
+        presenter.setAPI(mAPI);
     }
 
     @Test
@@ -61,6 +62,5 @@ public class FirstLoginTest {
         verify(view, times(1)).showPassword1Error(R.string.password_empty1);
         verify(view, times(1)).showPassword2Error(R.string.password_empty2);
         verify(view, times(1)).showPassword2Error(R.string.password_not_the_same);
-        verify(service, times(1)).changePassword("oldtest", "test");
     }
 }

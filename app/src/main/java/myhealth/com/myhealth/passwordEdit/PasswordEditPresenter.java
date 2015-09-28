@@ -16,15 +16,14 @@ import myhealth.com.myhealth.maingui.MainActivity;
 
 public class PasswordEditPresenter implements APIInterface {
     PasswordEditActivity mView;
-    PasswordEditService mService;
+    private API mAPI = new API();
 
     public PasswordEditPresenter(PasswordEditActivity view) {
         mView = view;
-        mService = new PasswordEditService((PasswordEditActivity) mView, this);
     }
 
-    public void setService(PasswordEditService service) {
-        this.mService = service;
+    public void setAPI(API api) {
+        mAPI = api;
     }
 
     /**
@@ -51,7 +50,7 @@ public class PasswordEditPresenter implements APIInterface {
         parameters.put("old_password", passwordOld);
         parameters.put("new_password", password1);
 
-        API.request(API.USER_PASSWORD_PUT, API.PUT, this, mView, parameters, true);
+        mAPI.request(API.USER_PASSWORD_PUT, API.PUT, this, mView, parameters, true);
     }
 
     @Override

@@ -3,16 +3,11 @@ package myhealth.com.myhealth.login;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,9 +20,14 @@ import myhealth.com.myhealth.passwordEdit.PasswordEditActivity;
 public class LoginPresenter implements APIInterface {
     private LoginActivity mView;
     private SharedPreferences.Editor mEditor;
+    private API mAPI = new API();
 
     public LoginPresenter(LoginActivity view) {
         mView = view;
+    }
+
+    public void setAPI(API api) {
+        mAPI = api;
     }
 
     /**
@@ -51,7 +51,7 @@ public class LoginPresenter implements APIInterface {
         params.put("password", mPassword);
 
         // Fire off the API request
-        API.request(API.USER_LOGIN_POST, API.POST, this, mView, params, false);
+        mAPI.request(API.USER_LOGIN_POST, API.POST, this, mView, params, false);
     }
 
     /**

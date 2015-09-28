@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
