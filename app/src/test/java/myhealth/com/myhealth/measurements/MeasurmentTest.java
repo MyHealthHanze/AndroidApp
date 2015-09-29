@@ -39,7 +39,7 @@ public class MeasurmentTest {
     @Mock
     private View view;
     @Mock
-    private ListAdapter listAdapter;
+    private BluetoothListAdapter listAdapter;
     private ArrayList<BluetoothDevice> listData;
 
     @Before
@@ -62,18 +62,19 @@ public class MeasurmentTest {
 
         when(adapter.getBondedDevices()).thenReturn(deviceSet);
         presenter.buildDeviceList();
+
         verify(adapter, times(2)).enable();
-        verify(listData, times(2)).clear();
-        verify(listData, times(1)).add()
-        verify(listAdapter, times(3))notifyDataSetChanged(device);
+        verify(listAdapter, times(3)).notifyDataSetChanged();
     }
 
     @Test
     public void testConnectToDevice() throws Exception {
         when(adapter.getBondedDevices()).thenReturn(new HashSet<BluetoothDevice>());
+        when(device.getName()).thenReturn("test");
         presenter.buildDeviceList();
-        presenter.connectToDevice();
-        when(adapter.getRemoteDevice()).thenReturn(device);
+        presenter.connectToDevice(device.getName());
+
+        when(adapter.getRemoteDevice(device.getName())).thenReturn(device);
         verify(dataReceiverThread, times(1)).cancel();
         verify(dataReceiverThread, times(1)).run();
     }

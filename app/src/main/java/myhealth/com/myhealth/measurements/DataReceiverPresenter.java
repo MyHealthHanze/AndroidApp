@@ -55,7 +55,7 @@ class DataReceiverPresenter {
      */
     public void setTestReceiver(DataReceiverThread receiver) {
         this.receiver = receiver;
-        this.testReceiver = receiver
+        this.testReceiver = receiver;
     }
 
     /**
