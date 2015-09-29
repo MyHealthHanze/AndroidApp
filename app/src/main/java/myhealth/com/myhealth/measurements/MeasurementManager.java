@@ -246,6 +246,11 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
 
     @Override
     public void onErrorResponse(VolleyError errorResponse) {
-        Log.d("MyHealth", "Error :( " + errorResponse.getMessage());
+        if (errorResponse != null) {
+            Log.d("MyHealth", "Error :( " + errorResponse.getMessage());
+        } else {
+            Log.d("MyHealth", "Error without a message :(");
+        }
     }
+
 }
