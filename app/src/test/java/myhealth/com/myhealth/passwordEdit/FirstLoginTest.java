@@ -1,15 +1,14 @@
 package myhealth.com.myhealth.passwordEdit;
 
-import myhealth.com.myhealth.R;
-import myhealth.com.myhealth.api.API;
-
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,7 +30,7 @@ public class FirstLoginTest {
     }
 
     @Test
-    public void testOnChangeClicked() throws  Exception {
+    public void testOnChangeClicked() throws Exception {
         when(view.getNewPassword1()).thenReturn("test");
         when(view.getNewPassword2()).thenReturn("test");
         when(view.getOldPassword()).thenReturn("oldtest");

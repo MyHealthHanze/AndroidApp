@@ -3,6 +3,7 @@ package myhealth.com.myhealth.measurements;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ import myhealth.com.myhealth.R;
  */
 class DataReceiverPresenter {
 
+    private static final String DEBUG_TAG = "MyHealth_Bluetooth";
     // The bluetooth adapter
     protected BluetoothAdapter mBluetoothAdapter;
     // The fragment to control
@@ -32,8 +35,10 @@ class DataReceiverPresenter {
     private ArrayList<BluetoothDevice> listData;
     // The adapter to match the arraylist to a listview
     private BluetoothListAdapter listAdapter;
-    // The connector
-    private BluetoothConnection connector;
+    // The receiver
+    private DataReceiverThread receiver;
+    // The data manager
+    private MeasurementManager manager;
 
     /**
      * Construct a Presenter to control the fragment
@@ -42,6 +47,7 @@ class DataReceiverPresenter {
      */
     public DataReceiverPresenter(DataReceiverFragment fragment, View view) {
         this.fragment = fragment;
+        manager = new MeasurementManager(fragment.getActivity(), (AppCompatActivity) fragment.getActivity());
         // Build the listview
         ListView itemList = (ListView) view.findViewById(R.id.list_view);
         listData = new ArrayList<>();
@@ -63,6 +69,7 @@ class DataReceiverPresenter {
      */
     public void buildDeviceList() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.enable();
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         listData.clear();
         listAdapter.notifyDataSetChanged();
@@ -83,17 +90,21 @@ class DataReceiverPresenter {
      */
     private void connectToDevice(String address) {
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-        if (connector != null) {
-            connector.cancel();
+        if (receiver != null) {
+            receiver.cancel();
         }
-        connector = new BluetoothConnection(device);
-        new Thread(connector).start();
+        receiver = new DataReceiverThread(device);
+        new Thread(receiver).start();
+    }
+
+    public void splitJsonMeasurement(String json) {
+
     }
 
     /**
      * Inner class to handle an outgoing Bluetooth connection
      */
-    private class BluetoothConnection implements Runnable {
+    private class DataReceiverThread implements Runnable {
 
         // Unique identifier necessary for a connection
         private static final String UUID_STRING = "34824060-611f-11e5-a837-0800200c9a66";
@@ -101,11 +112,11 @@ class DataReceiverPresenter {
         private BluetoothSocket mmSocket;
 
         /**
-         * Create the BluetoothConnection thread to try and connect with the given device
+         * Create the DataReceiverThread thread to try and connect with the given device
          *
          * @param device The device to connect to
          */
-        public BluetoothConnection(BluetoothDevice device) {
+        public DataReceiverThread(BluetoothDevice device) {
             // Use a temporary object that is later assigned to mmSocket,
             // because mmSocket is final
             BluetoothSocket tmp = null;
@@ -131,15 +142,21 @@ class DataReceiverPresenter {
                 // until it succeeds or throws an exception
                 mmSocket.connect();
                 fragment.giveStatusUpdate(fragment.getString(R.string.connection_success));
-                readFromDevice();
+                List<String> json = readFromDevice();
+                for (String e :
+                        json) {
+                    Log.d(DEBUG_TAG, e);
+                }
+                manager.saveMeasurements(json);
             } catch (IOException connectException) {
                 // Unable to connect; close the socket and get out
                 fragment.giveStatusUpdate(fragment.getString(R.string.connection_error));
-                Log.d("BluetoothTest", connectException.getMessage());
+                Log.d(DEBUG_TAG, "IOException: " + connectException);
+                connectException.printStackTrace();
                 try {
                     mmSocket.close();
                 } catch (IOException closeException) {
-                    Log.d("BluetoothTest", closeException.getMessage());
+                    Log.d(DEBUG_TAG, "" + closeException);
                 }
             }
         }
@@ -147,9 +164,15 @@ class DataReceiverPresenter {
         /**
          * Read incoming data from the device
          */
-        private void readFromDevice() throws IOException {
+        private List<String> readFromDevice() throws IOException {
             BufferedReader reader = new BufferedReader(new InputStreamReader(mmSocket.getInputStream()));
-            fragment.giveStatusUpdate(reader.readLine());
+            String tmp;
+            List<String> json = new ArrayList<>();
+            while ((tmp = reader.readLine()).length() > 0) {
+                json.add(tmp);
+            }
+            fragment.giveStatusUpdate(fragment.getString(R.string.data_received));
+            return json;
         }
 
         /**

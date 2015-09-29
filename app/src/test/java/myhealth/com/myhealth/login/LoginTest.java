@@ -2,9 +2,6 @@ package myhealth.com.myhealth.login;
 
 import android.content.SharedPreferences;
 
-import myhealth.com.myhealth.R;
-import myhealth.com.myhealth.api.API;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +10,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
+
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoginTest {
