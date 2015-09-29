@@ -97,10 +97,6 @@ class DataReceiverPresenter {
         new Thread(receiver).start();
     }
 
-    public void splitJsonMeasurement(String json) {
-
-    }
-
     /**
      * Inner class to handle an outgoing Bluetooth connection
      */

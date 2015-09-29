@@ -83,7 +83,6 @@ public class MeasurementManager extends SQLiteOpenHelper implements APIInterface
     // The measurements to locally update after a response
     private Map<Integer, JSONObject> measurements;
 
-
     /**
      * Constructor to initialize a MeasurementManager object
      *
