@@ -11,7 +11,7 @@
     <string name="email_error">Email is incorrect!</string>
     <string name="password_error">Password is incorrect!</string>
     <string name="login_unsuccessful">Login unsuccessful</string>
-    <string name="bluetooth_string">Connect to Bluetooth</string>
+    <string name="bluetooth_string">Refresh paired devices</string>
     <string name="connection_success">Connection success</string>
     <string name="connection_error">Connection failed. Is the device in range?</string>
     <string name="drawer_view_measurements">Measurements</string>

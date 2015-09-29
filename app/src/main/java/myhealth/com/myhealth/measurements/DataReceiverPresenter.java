@@ -97,10 +97,6 @@ class DataReceiverPresenter {
         new Thread(receiver).start();
     }
 
-    public void splitJsonMeasurement(String json) {
-
-    }
-
     /**
      * Inner class to handle an outgoing Bluetooth connection
      */
@@ -137,17 +133,13 @@ class DataReceiverPresenter {
         public void run() {
             // Cancel discovery because it will slow down the connection
             mBluetoothAdapter.cancelDiscovery();
+            List<String> json = null;
             try {
                 // Connect the device through the socket. This will block
                 // until it succeeds or throws an exception
                 mmSocket.connect();
                 fragment.giveStatusUpdate(fragment.getString(R.string.connection_success));
-                List<String> json = readFromDevice();
-                for (String e :
-                        json) {
-                    Log.d(DEBUG_TAG, e);
-                }
-                manager.saveMeasurements(json);
+                json = readFromDevice();
             } catch (IOException connectException) {
                 // Unable to connect; close the socket and get out
                 fragment.giveStatusUpdate(fragment.getString(R.string.connection_error));
@@ -159,17 +151,28 @@ class DataReceiverPresenter {
                     Log.d(DEBUG_TAG, "" + closeException);
                 }
             }
+            if (json != null && json.size() > 0) {
+                for (String e :
+                        json) {
+                    Log.d(DEBUG_TAG, e);
+                }
+                manager.saveMeasurements(json);
+            }
         }
 
         /**
          * Read incoming data from the device
          */
-        private List<String> readFromDevice() throws IOException {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(mmSocket.getInputStream()));
+        private List<String> readFromDevice() {
             String tmp;
             List<String> json = new ArrayList<>();
-            while ((tmp = reader.readLine()).length() > 0) {
-                json.add(tmp);
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(mmSocket.getInputStream()));
+                while ((tmp = reader.readLine()).length() > 0) {
+                    json.add(tmp);
+                }
+            } catch (IOException e) {
+                // Do nothing
             }
             fragment.giveStatusUpdate(fragment.getString(R.string.data_received));
             return json;
