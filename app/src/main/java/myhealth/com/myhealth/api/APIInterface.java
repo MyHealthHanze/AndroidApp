@@ -9,6 +9,10 @@ public interface APIInterface {
 
     void onResponse(String response);
 
+    /**
+     *
+     * @param errorResponse can be null
+     */
     void onErrorResponse(VolleyError errorResponse);
 
 }
