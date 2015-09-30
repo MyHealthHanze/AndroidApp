@@ -1,12 +1,13 @@
 package myhealth.com.myhealth.login;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.api.API;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
@@ -25,7 +26,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         mPassword = (EditText) findViewById(R.id.password_input_field);
 
         // Create the new presenter
-        mLoginPresenter = new LoginPresenter(this);
+        mLoginPresenter = new LoginPresenter(this, new API());
 
         // Setup the button and its ClickListener
         mLoginButton = (Button) findViewById(R.id.login);
