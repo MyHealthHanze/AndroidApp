@@ -53,7 +53,7 @@ class DataReceiverPresenter {
      *
      * @param receiver
      */
-    public void setTestReceiver(DataReceiverThread receiver) {
+    protected void setTestReceiver(DataReceiverThread receiver) {
         this.receiver = receiver;
         this.testReceiver = receiver;
     }

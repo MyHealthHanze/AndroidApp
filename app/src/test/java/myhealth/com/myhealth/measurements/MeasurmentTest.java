@@ -1,9 +1,11 @@
 package myhealth.com.myhealth.measurements;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.view.View;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import myhealth.com.myhealth.R;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,6 +30,10 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MeasurmentTest {
+    @Mock
+    private Activity activity;
+    @Mock
+    private ListView listView;
     private DataReceiverPresenter presenter;
     @Mock
     private DataReceiverPresenter.DataReceiverThread dataReceiverThread;
@@ -47,6 +55,8 @@ public class MeasurmentTest {
         MockitoAnnotations.initMocks(this);
         deviceSet = new HashSet<BluetoothDevice>();
         deviceSet.add(device);
+        when(fragment.getActivity()).thenReturn(activity);
+        when(view.findViewById(R.id.list_view)).thenReturn(listView);
         presenter = new DataReceiverPresenter(fragment, view);
         presenter.setmTestBluetoothAdapter(adapter);
         presenter.setmTestDevice(device);
