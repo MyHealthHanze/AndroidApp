@@ -40,6 +40,60 @@ class DataReceiverPresenter {
     // The data manager
     private MeasurementManager manager;
 
+    // The receiver to mock
+    private DataReceiverThread testReceiver;
+    // Bluetooth device to mock
+    private BluetoothDevice mTestDevice;
+    // Bluetooth adapter to mock
+    private BluetoothAdapter mTestBluetoothAdapter;
+
+
+    /**
+     * sets a data receiver thread for mocking
+     *
+     * @param receiver
+     */
+    protected void setTestReceiver(DataReceiverThread receiver) {
+        this.receiver = receiver;
+        this.testReceiver = receiver;
+    }
+
+    /**
+     * sets a list data for mocking
+     *
+     * @param listData
+     */
+    protected void setTestListData(ArrayList<BluetoothDevice> listData) {
+        this.listData = listData;
+    }
+
+    /**
+     * sets a list adapter for mocking
+     *
+     * @param listAdapter
+     */
+    protected void setTestListAdapter(BluetoothListAdapter listAdapter) {
+        this.listAdapter = listAdapter;
+    }
+
+    /**
+     * sets a bluetooth device for mocking
+     *
+     * @param mTestDevice
+     */
+    protected void setmTestDevice(BluetoothDevice mTestDevice) {
+        this.mTestDevice = mTestDevice;
+    }
+
+    /**
+     * sets a bluetooth adapter for mocking
+     *
+     * @param mTestBluetoothAdapter
+     */
+    protected void setmTestBluetoothAdapter(BluetoothAdapter mTestBluetoothAdapter) {
+        this.mTestBluetoothAdapter = mTestBluetoothAdapter;
+    }
+
     /**
      * Construct a Presenter to control the fragment
      *
@@ -68,7 +122,11 @@ class DataReceiverPresenter {
      * Build a list of paired devices
      */
     public void buildDeviceList() {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mTestBluetoothAdapter != null){
+            mBluetoothAdapter = mTestBluetoothAdapter;
+        }else {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        }
         mBluetoothAdapter.enable();
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         listData.clear();
@@ -88,19 +146,23 @@ class DataReceiverPresenter {
      *
      * @param address The MAC address of the device
      */
-    private void connectToDevice(String address) {
+    protected void connectToDevice(String address) {
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         if (receiver != null) {
             receiver.cancel();
         }
-        receiver = new DataReceiverThread(device);
+        if (testReceiver != null){
+            receiver = testReceiver;
+        } else {
+            receiver = new DataReceiverThread(device);
+        }
         new Thread(receiver).start();
     }
 
     /**
      * Inner class to handle an outgoing Bluetooth connection
      */
-    private class DataReceiverThread implements Runnable {
+    protected class DataReceiverThread implements Runnable {
 
         // Unique identifier necessary for a connection
         private static final String UUID_STRING = "34824060-611f-11e5-a837-0800200c9a66";

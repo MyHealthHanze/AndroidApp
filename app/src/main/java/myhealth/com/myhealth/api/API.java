@@ -67,11 +67,9 @@ public class API {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if (error.networkResponse != null) {
                             presenter.onErrorResponse(error);
 
                             handleErrorWithToast(error, activity);
-                        }
                     }
                 }
         ) {
