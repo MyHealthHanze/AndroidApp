@@ -11,8 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.HashMap;
+
 import myhealth.com.myhealth.R;
-import myhealth.com.myhealth.measurements.DataReceiverFragment;
+import myhealth.com.myhealth.measurements.receiving.DataReceiverFragment;
+import myhealth.com.myhealth.measurements.viewing.BPViewerFragment;
 import myhealth.com.myhealth.welcome.WelcomeFragment;
 
 /**
@@ -21,24 +24,26 @@ import myhealth.com.myhealth.welcome.WelcomeFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private String[] fragments = new String[]{"Measurements", "Receive measurements"};
+    private String[] fragments;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    private HashMap<Integer, Fragment> loadedFragments;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragments = new String[]{getString(R.string.drawer_view_measurements), getString(R.string.drawer_receive_measurements), "Welcome"};
         createDrawer();
-        getFragmentManager().beginTransaction().replace(R.id.fragment_holder, new WelcomeFragment()).commit();
+        loadedFragments = new HashMap<>();
+        selectFragment(0);
     }
 
     /**
      * Create the drawer
      */
     private void createDrawer() {
-        fragments = new String[]{getString(R.string.drawer_view_measurements), getString(R.string.drawer_receive_measurements), "Welcome"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -63,25 +68,34 @@ public class MainActivity extends AppCompatActivity {
      * @param id The id of the new fragment
      */
     public void selectFragment(int id) {
-        Fragment fragment = new WelcomeFragment();
+        Fragment fragment = loadedFragments.get(id);
+        if (fragment == null) {
+            fragment = getFragment(id);
+            loadedFragments.put(id, fragment);
+        }
         Log.d("MyHealth", "Fragment id: " + id);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).addToBackStack(null).commit();
+        mDrawerList.setItemChecked(id, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    /**
+     * Get a fragment based on id
+     *
+     * @param id The id
+     * @return The fragment
+     */
+    private Fragment getFragment(int id) {
         switch (id) {
             case 0:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
-                break;
+                return new WelcomeFragment();
             case 1:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_holder, new DataReceiverFragment()).commit();
-                break;
+                return new DataReceiverFragment();
             case 2:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
-                break;
+                return new BPViewerFragment();
             default:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
-                break;
+                return new WelcomeFragment();
         }
-        mDrawerList.setItemChecked(id, true);
-        setTitle(fragments[id]);
-        mDrawerLayout.closeDrawer(mDrawerList);
     }
 
     /**
@@ -96,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
         if (!loggedIn) {
             super.onBackPressed();
         } else {
-            // Add this return so it works for all devices
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            }
             return;
         }
     }

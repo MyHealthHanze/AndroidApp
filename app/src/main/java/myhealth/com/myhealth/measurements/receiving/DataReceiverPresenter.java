@@ -1,4 +1,4 @@
-package myhealth.com.myhealth.measurements;
+package myhealth.com.myhealth.measurements.receiving;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import myhealth.com.myhealth.R;
+import myhealth.com.myhealth.measurements.data.MeasurementManager;
 
 /**
  * Created by Sander on 26-9-2015.
@@ -72,15 +73,8 @@ class DataReceiverPresenter {
         mBluetoothAdapter.enable();
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         listData.clear();
+        listData.addAll(pairedDevices);
         listAdapter.notifyDataSetChanged();
-        if (pairedDevices.size() > 0) {
-            // Loop through paired devices
-            for (BluetoothDevice device : pairedDevices) {
-                // Add the name and address to an array adapter to show in a ListView
-                listData.add(device);
-                listAdapter.notifyDataSetChanged();
-            }
-        }
     }
 
     /**

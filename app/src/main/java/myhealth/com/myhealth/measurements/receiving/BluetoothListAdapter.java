@@ -1,4 +1,4 @@
-package myhealth.com.myhealth.measurements;
+package myhealth.com.myhealth.measurements.receiving;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import myhealth.com.myhealth.R;
@@ -19,15 +18,15 @@ import myhealth.com.myhealth.R;
  */
 class BluetoothListAdapter extends ArrayAdapter<BluetoothDevice> {
 
-    // The context
-    private Context context;
+    // The layout inflater
+    LayoutInflater inflater;
     // The list of paired devices
     private List<BluetoothDevice> devices;
 
-    public BluetoothListAdapter(Context context, int resource, ArrayList<BluetoothDevice> devices) {
+    public BluetoothListAdapter(Context context, int resource, List<BluetoothDevice> devices) {
         super(context, resource, devices);
-        this.context = context;
         this.devices = devices;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -49,8 +48,6 @@ class BluetoothListAdapter extends ArrayAdapter<BluetoothDevice> {
     public View getView(int position, View convertView, ViewGroup parent) {
         BluetoothDevice device = devices.get(position);
 
-        // You should fetch the LayoutInflater once in your constructor
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.two_line_list_item, null);
         TextView name = (TextView) view.findViewById(R.id.device_name);
         TextView mac = (TextView) view.findViewById(R.id.device_mac);

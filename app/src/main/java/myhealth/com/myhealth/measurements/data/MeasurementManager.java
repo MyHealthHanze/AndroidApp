@@ -1,4 +1,4 @@
-package myhealth.com.myhealth.measurements;
+package myhealth.com.myhealth.measurements.data;
 
 import android.content.ContentValues;
 import android.content.Context;

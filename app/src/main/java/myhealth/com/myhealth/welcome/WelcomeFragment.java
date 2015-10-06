@@ -54,4 +54,10 @@ public class WelcomeFragment extends Fragment {
         }
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.drawer_view_measurements));
+    }
 }

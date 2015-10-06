@@ -1,4 +1,4 @@
-package myhealth.com.myhealth.measurements;
+package myhealth.com.myhealth.measurements.receiving;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,12 +16,8 @@ import myhealth.com.myhealth.R;
  */
 public class DataReceiverFragment extends Fragment {
 
+    // The presenter
     private DataReceiverPresenter presenter;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +31,12 @@ public class DataReceiverFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.drawer_receive_measurements));
     }
 
     /**
